@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "buildCommand": "npm run build && mkdir -p dist && cp -r public/build dist/build && cp -f public/favicon.ico public/robots.txt dist/",
+  "buildCommand": "npm run build && mkdir -p dist && cp -r public/build dist/build && cp -r public/assets dist/assets && cp -r vercel-storage dist/storage && cp -f public/favicon.ico public/robots.txt dist/",
   "outputDirectory": "dist",
   "functions": {
     "api/index.php": { "runtime": "vercel-php@0.7.4" }
