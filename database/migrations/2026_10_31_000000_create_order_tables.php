@@ -8,35 +8,55 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('ordertbl', function (Blueprint $table) {
-            $table->id('orderid');
-            $table->string('invoice_no')->unique();
-            $table->string('customer_name');
-            $table->string('phone', 30);
-            $table->string('email')->nullable();
-            $table->text('address');
-            $table->text('note')->nullable();
-            $table->decimal('total', 12, 2);
-            $table->string('status')->default('Pending');
-            $table->timestamps();
+        Schema::create('categorytbl', function (Blueprint $t) {
+            $t->id('cateid');
+            $t->string('catetitle');
+            $t->text('description')->nullable();
+            $t->string('status')->default('Active');
+            $t->timestamps();
+            $t->text('img')->nullable();
         });
 
-        Schema::create('orderitemtbl', function (Blueprint $table) {
-            $table->id('itemid');
-            $table->unsignedBigInteger('orderid')->index();
-            $table->unsignedBigInteger('proid');
-            $table->string('proname');          // snapshot, so old invoices never change
-            $table->decimal('price', 12, 2);    // snapshot
-            $table->unsignedInteger('qty');
-            $table->decimal('subtotal', 12, 2);
+        Schema::create('producttbl', function (Blueprint $t) {
+            $t->id('proid');
+            $t->unsignedBigInteger('cateid')->index();
+            $t->string('proname');
+            $t->integer('qty')->default(0);
+            $t->double('price')->default(0);
+            $t->text('img1')->nullable();
+            $t->text('img2')->nullable();
+            $t->text('img3')->nullable();
+            $t->text('img4')->nullable();
+            $t->timestamps();
+        });
 
-            $table->foreign('orderid')->references('orderid')->on('ordertbl')->cascadeOnDelete();
+        Schema::create('settingtbl', function (Blueprint $t) {
+            $t->id();
+            $t->string('title');
+            $t->text('img1')->nullable();
+            $t->text('description')->nullable();
+            $t->string('type');
+            $t->string('status')->default('Active');
+            $t->timestamps();
+        });
+
+        Schema::create('pagetbl', function (Blueprint $t) {
+            $t->id();
+            $t->string('title');
+            $t->string('slug')->unique();
+            $t->text('img1')->nullable();
+            $t->text('description')->nullable();
+            $t->text('content')->nullable();
+            $t->string('status')->default('Active');
+            $t->timestamps();
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('orderitemtbl');
-        Schema::dropIfExists('ordertbl');
+        Schema::dropIfExists('pagetbl');
+        Schema::dropIfExists('settingtbl');
+        Schema::dropIfExists('producttbl');
+        Schema::dropIfExists('categorytbl');
     }
 };
