@@ -1,11 +1,12 @@
 {
   "version": 2,
+  "buildCommand": "npm run build && mkdir -p dist && cp -r public/build dist/build && cp -f public/favicon.ico public/robots.txt dist/",
+  "outputDirectory": "dist",
   "functions": {
     "api/index.php": { "runtime": "vercel-php@0.7.4" }
   },
   "routes": [
-    { "src": "/build/(.*)", "dest": "/public/build/$1" },
-    { "src": "/(.*\\.(?:css|js|ico|png|jpg|jpeg|svg|webp|woff2?))", "dest": "/public/$1" },
+    { "handle": "filesystem" },
     { "src": "/(.*)", "dest": "/api/index.php" }
   ],
   "env": {
